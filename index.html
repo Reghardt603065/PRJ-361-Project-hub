@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GradConnect</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+    <section id="authScreen" class="auth-screen">
+      <div class="auth-hero">
+        <nav class="auth-nav">
+          <div class="logo-box">GC</div>
+          <button class="ghost-btn" id="showLoginBtn">Login</button>
+        </nav>
+        <div class="hero-content">
+          <span class="eyebrow">IT Graduate Career Acceleration Platform</span>
+          <h1>GradConnect</h1>
+          <p>Accelerate your IT career with jobs, certifications, hackathons and portfolio tools that keep your skills sharp.</p>
+          <div class="hero-stats">
+            <div><strong>0</strong><span>Applications</span></div>
+            <div><strong>0</strong><span>Certifications</span></div>
+            <div><strong>0</strong><span>Hackathons</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-card-wrap">
+        <div id="loginCard" class="auth-card active">
+          <h2>Welcome Back</h2>
+          <p class="muted">Login to continue to your fresh GradConnect dashboard.</p>
+          <form id="loginForm">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" required />
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter password" required />
+            <div class="form-row">
+              <label class="check"><input type="checkbox" /> Remember me</label>
+              <a href="#">Forgot password?</a>
+            </div>
+            <button type="submit" class="primary-btn full">Login</button>
+            <p class="switch-text">Don't have an account? <button type="button" id="goRegister">Register</button></p>
+          </form>
+        </div>
+
+        <div id="registerCard" class="auth-card">
+          <button class="back-btn" id="backLogin">← Back</button>
+          <h2>Create Your Account</h2>
+          <p class="muted">Register first, then login to access your dashboard.</p>
+          <form id="registerForm">
+            <label>Full Name</label>
+            <input type="text" id="regName" placeholder="Full Name" required />
+            <label>Email Address</label>
+            <input type="email" id="regEmail" placeholder="you@example.com" required />
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="Password" required minlength="4" />
+            <label>Confirm Password</label>
+            <input type="password" id="regConfirm" placeholder="Confirm Password" required minlength="4" />
+            <label>Primary Skill</label>
+            <select id="regSkill" required>
+              <option value="">Select your primary skill</option>
+              <option>Software Development</option>
+              <option>Networking</option>
+              <option>Cybersecurity</option>
+              <option>Data Analysis</option>
+              <option>IT Support</option>
+            </select>
+            <label class="check"><input type="checkbox" id="terms" required /> I agree to the Terms & Conditions and Privacy Policy</label>
+            <button type="submit" class="primary-btn full">Create Account</button>
+            <p class="switch-text">Already have an account? <button type="button" id="goLogin">Login</button></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="mainApp" class="main-app hidden">
+      <aside class="sidebar">
+        <div class="side-logo">GC</div>
+        <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+        <button class="nav-btn" data-page="jobs">Jobs</button>
+        <button class="nav-btn" data-page="certification">Certification</button>
+        <button class="nav-btn" data-page="hackathons">Hackathons</button>
+        <button class="nav-btn" data-page="portfolio">Portfolio</button>
+        <button class="nav-btn" data-page="profile">Profile</button>
+        <button class="nav-btn" data-page="settings">Settings</button>
+        <button class="nav-btn logout" id="logoutBtn">Logout</button>
+      </aside>
+
+      <main class="content">
+        <header class="topbar">
+          <div>
+            <p class="muted small">Welcome back</p>
+            <h2 id="topUserName">New Graduate</h2>
+          </div>
+          <div class="top-actions">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="avatar-btn" data-page="profile">👤</button>
+          </div>
+        </header>
+
+        <section id="dashboard" class="page active">
+          <div class="welcome-card">
+            <div>
+              <span class="eyebrow">Keep Learning, Keep Building</span>
+              <h1>Your Future Starts Now</h1>
+              <p>You are starting fresh. Use the tools below to build momentum, apply for jobs and grow your portfolio.</p>
+            </div>
+            <div class="mountains"></div>
+          </div>
+          <h3>Quick Overview</h3>
+          <div class="stat-grid">
+            <div class="stat-card"><span>Jobs Applied</span><strong id="jobsAppliedCount">0</strong></div>
+            <div class="stat-card"><span>Certifications</span><strong id="certCount">0</strong></div>
+            <div class="stat-card"><span>Hackathons Joined</span><strong id="hackCount">0</strong></div>
+            <div class="stat-card"><span>Portfolio Projects</span><strong id="portfolioCount">0</strong></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Recent Activity</h3><button class="link-btn">View all</button></div>
+            <div id="activityList" class="empty-state">No activity yet. Start by applying for a job, adding a certification, joining a hackathon or creating a portfolio project.</div>
+          </div>
+        </section>
+
+        <section id="jobs" class="page">
+          <div class="page-title"><h1>💼 Jobs</h1><p>Search and apply for entry-level IT opportunities.</p></div>
+          <div class="filters">
+            <input type="search" id="jobSearch" placeholder="Search job skills, companies..." />
+            <select id="locationFilter"><option>Location</option><option>Pretoria</option><option>Cape Town</option><option>Remote</option></select>
+            <select><option>Job Type</option><option>Full-time</option><option>Internship</option><option>Remote</option></select>
+            <select><option>Experience</option><option>Entry Level</option><option>Junior</option></select>
+          </div>
+          <div class="list-meta"><span>3 jobs found</span><span>Sort by: Newest</span></div>
+          <div id="jobsList" class="cards-list"></div>
+        </section>
+
+        <section id="certification" class="page">
+          <div class="page-title split">
+            <div>
+              <h1>📜 Certification</h1>
+              <p>Add, track, edit and remove your learning certifications.</p>
+            </div>
+            <button class="primary-btn" id="addCertBtn">Add Certification</button>
+          </div>
+
+          <div class="cert-summary-grid">
+            <div class="stat-card"><span>Total Added</span><strong id="certTotalCount">0</strong></div>
+            <div class="stat-card"><span>Completed</span><strong id="certCompletedCount">0</strong></div>
+            <div class="stat-card"><span>In Progress</span><strong id="certProgressCount">0</strong></div>
+          </div>
+
+          <div class="panel progress-panel">
+            <div class="panel-head"><h3>Overall Progress</h3><strong id="overallProgress">0%</strong></div>
+            <div class="progress"><span id="overallBar"></span></div>
+            <p class="muted">Keep going. Every certificate improves your employability profile.</p>
+          </div>
+
+          <div class="tabs cert-tabs">
+            <button class="active" data-cert-filter="all">My Certifications</button>
+            <button data-cert-filter="in-progress">In Progress</button>
+            <button data-cert-filter="completed">Completed</button>
+            <button data-cert-filter="recommended">Recommended</button>
+          </div>
+          <div id="certList" class="cards-list"></div>
+        </section>
+
+        <section id="hackathons" class="page">
+          <div class="page-title split"><div><h1>🏁 Hackathon</h1><p>Join events and build practical experience.</p></div><button class="ghost-btn dark">Filters</button></div>
+          <input type="search" class="wide-search" placeholder="Search hackathons" />
+          <div id="hackList" class="cards-list"></div>
+        </section>
+
+        <section id="portfolio" class="page">
+          <div class="page-title split"><div><h1>🗂 Portfolio Builder</h1><p>Create projects for a professional portfolio.</p></div><button class="ghost-btn dark">Preview Portfolio</button></div>
+          <div class="portfolio-layout">
+            <form id="portfolioForm" class="panel form-panel">
+              <h3>Add New Project</h3>
+              <label>Project Title</label>
+              <input id="projectTitle" placeholder="Enter project title" required />
+              <label>Description</label>
+              <textarea id="projectDesc" placeholder="Describe your project" required></textarea>
+              <label>Technologies</label>
+              <input id="projectTech" placeholder="HTML, React, Node.js" required />
+              <label>GitHub Repository</label>
+              <input id="projectRepo" placeholder="https://github.com/username/repo" />
+              <div class="form-actions"><button type="reset" class="ghost-btn dark">Cancel</button><button class="primary-btn">Add Project</button></div>
+            </form>
+            <div class="panel">
+              <h3>Your Projects</h3>
+              <div id="projectList" class="empty-state">No portfolio projects yet.</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="profile" class="page">
+          <div class="page-title split">
+            <div>
+              <h1>👤 Profile</h1>
+              <p>Your graduate profile summary.</p>
+            </div>
+            <button class="primary-btn" id="editProfileBtn">Edit Profile</button>
+          </div>
+
+          <div class="profile-card">
+            <div class="profile-main">
+              <div class="profile-avatar" id="profileAvatar">👤</div>
+              <div>
+                <h2 id="profileName">New User</h2>
+                <p id="profileSkill">IT Graduate</p>
+                <p id="profileLocation">📍 South Africa</p>
+                <p id="profileEmail">student@example.com</p>
+                <p id="profilePhone" class="muted">No phone number added</p>
+              </div>
+            </div>
+
+            <div class="mini-stats">
+              <div><strong id="profileJobs">0</strong><span>Jobs Applied</span></div>
+              <div><strong id="profileCerts">0</strong><span>Certifications</span></div>
+              <div><strong id="profileHacks">0</strong><span>Hackathons</span></div>
+              <div><strong id="profileProjects">0</strong><span>Projects</span></div>
+            </div>
+
+            <div class="profile-links">
+              <a id="profileGithub" href="#" target="_blank" rel="noopener">GitHub not added</a>
+              <a id="profileLinkedin" href="#" target="_blank" rel="noopener">LinkedIn not added</a>
+            </div>
+
+            <div class="skills">
+              <h3>Skills</h3>
+              <div id="profileSkillsList"></div>
+            </div>
+
+            <div>
+              <h3>About Me</h3>
+              <p id="profileAbout">Passionate about building innovative solutions and continuously learning new technologies.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="settings" class="page">
+          <div class="page-title">
+            <h1>⚙️ Settings</h1>
+            <p>Manage basic website settings for this frontend prototype.</p>
+          </div>
+
+          <div class="settings-grid">
+            <form id="accountSettingsForm" class="panel form-panel">
+              <h3>Account Details</h3>
+              <p class="muted">Update your basic account details used on the website.</p>
+              <label>Display Name</label>
+              <input id="settingName" placeholder="Your name" />
+              <label>Email Address</label>
+              <input id="settingEmail" type="email" placeholder="you@example.com" />
+              <button class="primary-btn">Save Account Details</button>
+            </form>
+
+            <form id="passwordSettingsForm" class="panel form-panel">
+              <h3>Password</h3>
+              <p class="muted">Change the demo password for this browser account.</p>
+              <label>Current Password</label>
+              <input id="currentPassword" type="password" placeholder="Current password" />
+              <label>New Password</label>
+              <input id="newPassword" type="password" placeholder="New password" minlength="4" />
+              <button class="primary-btn">Update Password</button>
+            </form>
+
+            <div class="panel form-panel">
+              <h3>Notifications</h3>
+              <p class="muted">These switches control prototype notification preferences.</p>
+              <label class="toggle-row"><span>New job alerts</span><input type="checkbox" id="jobAlerts"></label>
+              <label class="toggle-row"><span>Certification reminders</span><input type="checkbox" id="certReminders"></label>
+              <label class="toggle-row"><span>Hackathon updates</span><input type="checkbox" id="hackathonUpdates"></label>
+              <label class="toggle-row"><span>Weekly progress summary</span><input type="checkbox" id="weeklySummary"></label>
+            </div>
+
+            <div class="panel form-panel">
+              <h3>Appearance</h3>
+              <p class="muted">Change the website look for your browser only.</p>
+              <label>Theme</label>
+              <select id="themeSelect">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+              <label>Accent Colour</label>
+              <select id="accentSelect">
+                <option value="brown">Brown</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+                <option value="purple">Purple</option>
+              </select>
+            </div>
+
+            <div class="panel form-panel">
+              <h3>Privacy</h3>
+              <p class="muted">Basic profile visibility controls for the website prototype.</p>
+              <label class="toggle-row"><span>Make profile visible</span><input type="checkbox" id="profileVisible"></label>
+              <label class="toggle-row"><span>Show email on profile</span><input type="checkbox" id="showEmail"></label>
+              <label class="toggle-row"><span>Show GitHub and LinkedIn links</span><input type="checkbox" id="showLinks"></label>
+            </div>
+
+            <div class="panel form-panel danger-panel">
+              <h3>Demo Data</h3>
+              <p class="muted">Clear your activity, applications, certifications, hackathons and portfolio projects for a fresh start.</p>
+              <button type="button" class="danger-btn" id="clearDemoDataBtn">Clear My Demo Data</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+
+  <div id="profileModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h2>Edit Profile</h2>
+          <p class="muted">Update the information displayed on your profile page.</p>
+        </div>
+        <button class="icon-btn" id="closeProfileModal" type="button">✕</button>
+      </div>
+
+      <form id="profileForm" class="form-panel">
+        <div class="form-two">
+          <div>
+            <label>Full Name</label>
+            <input id="editName" placeholder="Full Name" required />
+          </div>
+          <div>
+            <label>Primary Skill</label>
+            <input id="editSkill" placeholder="IT Support, Software Development..." />
+          </div>
+        </div>
+
+        <div class="form-two">
+          <div>
+            <label>Location</label>
+            <input id="editLocation" placeholder="South Africa" />
+          </div>
+          <div>
+            <label>Phone Number</label>
+            <input id="editPhone" placeholder="Optional" />
+          </div>
+        </div>
+
+        <label>Skills</label>
+        <input id="editSkills" placeholder="JavaScript, HTML, CSS, Python" />
+
+        <label>GitHub Link</label>
+        <input id="editGithub" placeholder="https://github.com/username" />
+
+        <label>LinkedIn Link</label>
+        <input id="editLinkedin" placeholder="https://linkedin.com/in/username" />
+
+        <label>About Me</label>
+        <textarea id="editAbout" placeholder="Write a short professional summary"></textarea>
+
+        <div class="form-actions">
+          <button type="button" class="ghost-btn dark" id="cancelProfileEdit">Cancel</button>
+          <button class="primary-btn">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <div id="certModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h2 id="certModalTitle">Add Certification</h2>
+          <p class="muted">This is only website-side prototype data saved in your browser.</p>
+        </div>
+        <button class="icon-btn" id="closeCertModal" type="button">✕</button>
+      </div>
+
+      <form id="certForm" class="form-panel">
+        <input type="hidden" id="certId" />
+        <div class="form-two">
+          <div>
+            <label>Certification Name</label>
+            <input id="certName" placeholder="CompTIA A+, CCNA, Azure Fundamentals" required />
+          </div>
+          <div>
+            <label>Provider</label>
+            <input id="certProvider" placeholder="CompTIA, Cisco, Microsoft" required />
+          </div>
+        </div>
+
+        <div class="form-two">
+          <div>
+            <label>Status</label>
+            <select id="certStatus">
+              <option>Not Started</option>
+              <option>In Progress</option>
+              <option>Completed</option>
+            </select>
+          </div>
+          <div>
+            <label>Progress Percentage</label>
+            <input id="certProgress" type="number" min="0" max="100" value="0" />
+          </div>
+        </div>
+
+        <div class="form-two">
+          <div>
+            <label>Date Started</label>
+            <input id="certStartDate" type="date" />
+          </div>
+          <div>
+            <label>Target Completion Date</label>
+            <input id="certTargetDate" type="date" />
+          </div>
+        </div>
+
+        <label>Notes</label>
+        <textarea id="certNotes" placeholder="Add study notes, exam goals, or reminders"></textarea>
+
+        <div class="form-actions">
+          <button type="button" class="ghost-btn dark" id="cancelCertEdit">Cancel</button>
+          <button class="primary-btn">Save Certification</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
